@@ -32,81 +32,36 @@
  */
 
 // Init the hooks of the plugins -Needed
-function plugin_init_behaviors() {
+function plugin_init_esu2behaviors() {
    global $PLUGIN_HOOKS, $CFG_GLPI;
 
-   Plugin::registerClass('PluginBehaviorsConfig', ['addtabon' => 'Config']);
-   $PLUGIN_HOOKS['config_page']['behaviors'] = 'front/config.form.php';
+   Plugin::registerClass('PluginEsu2behaviorsConfig', ['addtabon' => 'Config']);
+   $PLUGIN_HOOKS['config_page']['esu2behaviors'] = 'front/config.form.php';
 
-   $PLUGIN_HOOKS['item_add']['behaviors'] =
-      ['Ticket_User'        => ['PluginBehaviorsTicket_User',       'afterAdd'],
-       'Group_Ticket'       => ['PluginBehaviorsGroup_Ticket',      'afterAdd'],
-       'Supplier_Ticket'    => ['PluginBehaviorsSupplier_Ticket',   'afterAdd'],
-       'Document_Item'      => ['PluginBehaviorsDocument_Item',     'afterAdd'],
-       'ITILFollowup'       => ['PluginBehaviorsITILFollowup',      'alterAdd']];
-
-   $PLUGIN_HOOKS['item_update']['behaviors'] =
-      ['Ticket'             => ['PluginBehaviorsTicket',            'afterUpdate']];
-
-   $PLUGIN_HOOKS['pre_item_add']['behaviors'] =
-      ['Ticket'             => ['PluginBehaviorsTicket',            'beforeAdd'],
-       'ITILSolution'       => ['PluginBehaviorsITILSolution',      'beforeAdd'],
-       'TicketTask'         => ['PluginBehaviorsTickettask',        'beforeAdd'],
-       'Change'             => ['PluginBehaviorsChange',            'beforeAdd'],
-       'ITILFollowup'       => ['PluginBehaviorsITILFollowup',      'beforeAdd']];
-
-   $PLUGIN_HOOKS['post_prepareadd']['behaviors'] =
-      ['Ticket'             => ['PluginBehaviorsTicket',            'afterPrepareAdd']];
-
-   $PLUGIN_HOOKS['pre_item_update']['behaviors'] =
-      ['Problem'            => ['PluginBehaviorsProblem',           'beforeUpdate'],
-       'Ticket'             => ['PluginBehaviorsTicket',            'beforeUpdate'],
-       'Change'             => ['PluginBehaviorsChange',            'beforeUpdate'],
-       'ITILSolution'       => ['PluginBehaviorsITILSolution',      'beforeUpdate'],
-       'TicketTask'         => ['PluginBehaviorsTickettask',        'beforeUpdate'],
-       'ChangeTask'         => ['PluginBehaviorsChangetask',        'beforeUpdate'],
-       'ProblemTask'        => ['PluginBehaviorsProblemtask',       'beforeUpdate']];
-
-   $PLUGIN_HOOKS['pre_item_purge']['behaviors'] =
-      ['Computer'           => ['PluginBehaviorsComputer',          'beforePurge']];
-
-   $PLUGIN_HOOKS['item_purge']['behaviors'] =
-      ['Document_Item'      => ['PluginBehaviorsDocument_Item',     'afterPurge']];
-
-   // Notifications
-   $PLUGIN_HOOKS['item_get_events']['behaviors'] =
-      ['NotificationTargetTicket' => ['PluginBehaviorsTicket',      'addEvents']];
-
-   $PLUGIN_HOOKS['item_add_targets']['behaviors'] =
-      ['NotificationTargetTicket' => ['PluginBehaviorsTicket',      'addTargets']];
-
-   $PLUGIN_HOOKS['item_action_targets']['behaviors'] =
-      ['NotificationTargetTicket' => ['PluginBehaviorsTicket',      'addActionTargets']];
-
-   $PLUGIN_HOOKS['pre_item_form']['behaviors'] = [PluginBehaviorsCommon::class, 'messageWarning'];
-   $PLUGIN_HOOKS['post_item_form']['behaviors'] = [PluginBehaviorsCommon::class, 'deleteAddSolutionButton'];
+   $PLUGIN_HOOKS['pre_item_add']['esu2behaviors'] =
+      ['ITILFollowup'       => ['PluginEsu2BehaviorsITILFollowup',      'beforeAdd']];
 
    // End init, when all types are registered
-   $PLUGIN_HOOKS['post_init']['behaviors'] = ['PluginBehaviorsCommon', 'postInit'];
+   //$PLUGIN_HOOKS['post_init']['esu2behaviors'] = ['PluginEsu2BehaviorsCommon', 'postInit'];
 
-   $PLUGIN_HOOKS['csrf_compliant']['behaviors'] = true;
+   $PLUGIN_HOOKS['csrf_compliant']['esu2behaviors'] = true;
 
    foreach ($CFG_GLPI["asset_types"] as $type) {
-      $PLUGIN_HOOKS['item_can']['behaviors'][$type] = [$type => ['PluginBehaviorsConfig', 'item_can']];
+      $PLUGIN_HOOKS['item_can']['esu2behaviors'][$type] = [$type => ['PluginEsu2behaviorsConfig', 'item_can']];
    }
 
-   $PLUGIN_HOOKS['add_default_where']['behaviors'] = ['PluginBehaviorsConfig', 'add_default_where'];
+   $PLUGIN_HOOKS['add_default_where']['esu2behaviors'] = ['PluginEsu2behaviorsConfig', 'add_default_where'];
 
 }
 
 
-function plugin_version_behaviors() {
+function plugin_version_esu2behaviors() {
 
-   return ['name'           => __('Behaviours', 'behaviors'),
-           'version'        => '2.7.2',
+   return ['name'           => __('ESU2 Behaviors', 'esu2behaviors'),
+           'version'        => '0.0.1',
            'license'        => 'AGPLv3+',
-           'author'         => 'Remi Collet, Nelly Mahu-Lasson',
-           'homepage'       => 'https://github.com/yllen/behaviors',
+           'author'         => 'Cody Ernesti',
+           'homepage'       => 'https://github.com/esu2two/glpi-esu2behaviors',
            'minGlpiVersion' => '10.0.2',
            'requirements'   => ['glpi' => ['min' => '10.0.0',
                                            'max' => '10.1.0']]];
@@ -115,6 +70,6 @@ function plugin_version_behaviors() {
 
 // Check configuration process for plugin : need to return true if succeeded
 // Can display a message only if failure and $verbose is true
-function plugin_behaviors_check_config($verbose=false) {
+function plugin_esu2behaviors_check_config($verbose=false) {
    return true;
 }
